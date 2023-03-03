@@ -9,13 +9,15 @@ import { useEffect, useState } from 'react';
 function App() {
 
   const [todos, setTodos] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetch(`http://localhost:3030/jsonstore/todos`)
       .then(res => res.json())
       .then(data => {
         setTodos(Object.values(data))
-        console.log(Object.values(data));
+        setIsLoading(false)
+        // console.log(Object.values(data));
       })
   }, []);
 
@@ -54,8 +56,12 @@ function App() {
 
 
             {/* <Loading /> */}
+            {isLoading ?
+              <Loading />
+              : <TodoList todos={todos} toggleTodoStatus={toggleTodoStatus} onTodoDel={onTodoDel} />
+              }
 
-            <TodoList todos={todos} toggleTodoStatus={toggleTodoStatus} onTodoDel={onTodoDel} />
+
 
           </div>
         </section>
